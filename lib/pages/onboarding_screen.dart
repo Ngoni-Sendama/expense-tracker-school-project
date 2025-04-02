@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
-import 'home_screen.dart';
 
 class OnboardingScreen extends StatelessWidget {
   @override
@@ -8,45 +7,72 @@ class OnboardingScreen extends StatelessWidget {
     return Scaffold(
       body: OnBoardingSlider(
         headerBackgroundColor: Colors.white,
+        pageBackgroundColor: Colors.white,
         finishButtonText: 'Start Now',
-        finishButtonStyle: FinishButtonStyle(backgroundColor: Colors.black),
-        totalPage: 3,
+        skipTextButton: Text('Skip'),
+        finishButtonStyle: FinishButtonStyle(
+          backgroundColor: const Color(0xFF066EBB),
+
+        ),
+        background: [Text(' '), Text(' ')], // Keeps default package format
+        totalPage: 2,
         speed: 1.8,
         onFinish: () {
           Navigator.pushReplacementNamed(context, '/home');
         },
-        background: [
-          _buildBackgroundImage('assets/BG1.jpg'),
-          _buildBackgroundImage('assets/BG2.jpg'),
-          _buildBackgroundImage('assets/BG3.jpg'),
-        ],
         pageBodies: [
-          _buildPage("Description Text 1"),
-          _buildPage("Description Text 2"),
-          _buildPage("Description Text 3"),
+          _buildOnboardingPage(
+            title: 'Student Expense App',
+            subtitle: 'Stay within budget and avoid surprise expenses.',
+            image: 'assets/savings.png',
+          ),
+          _buildOnboardingPage(
+            title: 'Get Started',
+            subtitle: 'Monitor where your money goes, effortlessly.',
+            image: 'assets/invest.png',
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildBackgroundImage(String imagePath) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(imagePath),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPage(String text) {
+  Widget _buildOnboardingPage({
+    required String title,
+    required String subtitle,
+    required String image,
+  }) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          text,
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+       Image.asset(image, fit: BoxFit.cover), 
+        Expanded(
+          flex: 2, // Gives 2/5 of space to text content
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  subtitle,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Color(0xFF919191),
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );
