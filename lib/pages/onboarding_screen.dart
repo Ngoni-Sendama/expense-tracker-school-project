@@ -32,7 +32,7 @@ class OnboardingScreen extends StatelessWidget {
           _buildOnboardingPage(
             title: 'Take Control of Expenses',
             subtitle: 'Stay within budget and avoid surprise expenses.',
-            image: 'assets/savings.png',
+            image: 'assets/invest.png',
           ),
           _buildOnboardingPage(
             title: 'Get Started',
