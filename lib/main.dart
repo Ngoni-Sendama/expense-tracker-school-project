@@ -28,7 +28,8 @@ class MyApp extends StatelessWidget {
         ),
       ),
 
-      home: OnboardingScreen(), // Show onboarding first
+      // home: OnboardingScreen(), // Show onboarding first
+      home: HomeScreen(), // Show onboarding first
       routes: {
         '/home': (context) => HomeScreen(), // Define home screen
       },
