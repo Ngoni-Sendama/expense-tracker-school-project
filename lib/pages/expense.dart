@@ -14,14 +14,8 @@ class ExpensePage extends StatelessWidget {
           return Column(
             children: [
               Container(
-                padding: EdgeInsets.only(top: 60, bottom: 20),
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(15),
-                  ),
-                ),
+                
                 alignment: Alignment.center,
                 child: Column(
                   children: [
@@ -29,14 +23,14 @@ class ExpensePage extends StatelessWidget {
                       '\$${expenseModel.totalExpense.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontSize: 28,
-                        color: Colors.white,
+                        color: Colors.black87,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 4),
                     Text(
                       'Total Expense',
-                      style: TextStyle(color: Colors.white70),
+                      style: TextStyle(color: Colors.black87),
                     ),
                   ],
                 ),

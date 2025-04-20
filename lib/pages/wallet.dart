@@ -5,8 +5,11 @@ import '../models/income_model.dart'; // Import the income model
 class IncomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
-      
+       appBar: AppBar(
+        title: Text('Income Tracker'),
+      ),
       body: Consumer<IncomeModel>(
         builder: (context, incomeModel, child) {
           return Column(
