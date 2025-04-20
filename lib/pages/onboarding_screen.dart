@@ -12,10 +12,13 @@ class OnboardingScreen extends StatelessWidget {
         skipTextButton: Text('Skip'),
         finishButtonStyle: FinishButtonStyle(
           backgroundColor: const Color(0xFF066EBB),
-
         ),
-        background: [Text(' '), Text(' ')], // Keeps default package format
-        totalPage: 2,
+        background: [
+          Text(' '),
+          Text(' '),
+          Text(' ')
+        ], // Keeps default package format
+        totalPage: 3,
         speed: 1.8,
         onFinish: () {
           Navigator.pushReplacementNamed(context, '/home');
@@ -27,9 +30,14 @@ class OnboardingScreen extends StatelessWidget {
             image: 'assets/savings.png',
           ),
           _buildOnboardingPage(
-            title: 'Get Started',
-            subtitle: 'Monitor where your money goes, effortlessly.',
+            title: 'Take Control of Expenses',
+            subtitle: 'Stay within budget and avoid surprise expenses.',
             image: 'assets/invest.png',
+          ),
+          _buildOnboardingPage(
+            title: 'Get Started',
+            subtitle: 'Your Data is Secured.',
+            image: 'assets/lastImage.png',
           ),
         ],
       ),
@@ -43,7 +51,7 @@ class OnboardingScreen extends StatelessWidget {
   }) {
     return Column(
       children: [
-       Image.asset(image, fit: BoxFit.cover), 
+        Image.asset(image, fit: BoxFit.cover),
         Expanded(
           flex: 2, // Gives 2/5 of space to text content
           child: Padding(

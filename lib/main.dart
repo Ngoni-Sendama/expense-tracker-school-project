@@ -12,8 +12,24 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Expense Tracker',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: OnboardingScreen(), // Show onboarding first
+      theme: ThemeData(
+        fontFamily: 'Inter',
+        primaryColor: Color(0xFF0666EB),
+        scaffoldBackgroundColor: Colors.white,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.black),
+          titleTextStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+
+      // home: OnboardingScreen(), // Show onboarding first
+      home: HomeScreen(), // Show onboarding first
       routes: {
         '/home': (context) => HomeScreen(), // Define home screen
       },
