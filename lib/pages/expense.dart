@@ -1,42 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/income_model.dart'; // Import the income model
+import '../models/expense_model.dart'; // Import your ExpenseModel
 
-class IncomePage extends StatelessWidget {
+class ExpensePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
-       appBar: AppBar(
-        title: Text('Income Tracker'),
+      appBar: AppBar(
+        title: Text('Expense Tracker'),
       ),
-      body: Consumer<IncomeModel>(
-        builder: (context, incomeModel, child) {
+      body: Consumer<ExpenseModel>(
+        builder: (context, expenseModel, child) {
           return Column(
             children: [
               Container(
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  // color: Color(0xFF0666EB),
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(15),
-                  ),
-                ),
+                
                 alignment: Alignment.center,
                 child: Column(
                   children: [
                     Text(
-                      '\$${incomeModel.totalIncome.toStringAsFixed(2)}',
+                      '\$${expenseModel.totalExpense.toStringAsFixed(2)}',
                       style: TextStyle(
                         fontSize: 28,
-                        color: Colors.black,
+                        color: Colors.black87,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(height: 4),
                     Text(
-                      'Total Income',
-                      style: TextStyle(color: Colors.black),
+                      'Total Expense',
+                      style: TextStyle(color: Colors.black87),
                     ),
                   ],
                 ),
@@ -44,7 +38,7 @@ class IncomePage extends StatelessWidget {
               Expanded(
                 child: ListView.builder(
                   padding: EdgeInsets.all(16),
-                  itemCount: incomeModel.incomes.length,
+                  itemCount: expenseModel.expenses.length,
                   itemBuilder: (context, index) {
                     return Card(
                       shape: RoundedRectangleBorder(
@@ -52,17 +46,17 @@ class IncomePage extends StatelessWidget {
                       ),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: Color(0xFF0666EB).withOpacity(0.1),
-                          child: Icon(Icons.money, color: Color(0xFF0666EB)),
+                          backgroundColor: Colors.redAccent.withOpacity(0.1),
+                          child: Icon(Icons.money_off, color: Colors.redAccent),
                         ),
-                        title: Text(incomeModel.incomes[index]['title']),
+                        title: Text(expenseModel.expenses[index]['title']),
                         subtitle: Text(
-                          '\$${incomeModel.incomes[index]['amount'].toStringAsFixed(2)}',
+                          '\$${expenseModel.expenses[index]['amount'].toStringAsFixed(2)}',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                         trailing: Icon(Icons.edit, size: 16),
-                        onTap: () => _showEditIncomeDialog(context, index),
+                        onTap: () => _showEditExpenseDialog(context, index),
                       ),
                     );
                   },
@@ -71,17 +65,17 @@ class IncomePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: ElevatedButton(
-                  onPressed: () => _showAddIncomeDialog(context),
+                  onPressed: () => _showAddExpenseDialog(context),
                   style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(16),
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Colors.redAccent,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
                     elevation: 3, // Optional: soft shadow
                   ),
                   child: Text(
-                    'New Income',
+                    'New Expense',
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -96,7 +90,7 @@ class IncomePage extends StatelessWidget {
     );
   }
 
-  void _showAddIncomeDialog(BuildContext context) {
+  void _showAddExpenseDialog(BuildContext context) {
     final TextEditingController titleController = TextEditingController();
     final TextEditingController amountController = TextEditingController();
 
@@ -104,26 +98,24 @@ class IncomePage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Add New Income'),
+          title: Text('Add New Expense'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(labelText: 'Income Title'),
+                decoration: InputDecoration(labelText: 'Expense Title'),
               ),
               TextField(
                 controller: amountController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'Income Amount'),
+                decoration: InputDecoration(labelText: 'Expense Amount'),
               ),
             ],
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: Text('Cancel'),
             ),
             TextButton(
@@ -133,8 +125,8 @@ class IncomePage extends StatelessWidget {
                     double.tryParse(amountController.text) ?? 0.0;
 
                 if (title.isNotEmpty && amount > 0) {
-                  Provider.of<IncomeModel>(context, listen: false)
-                      .addIncome(title, amount);
+                  Provider.of<ExpenseModel>(context, listen: false)
+                      .addExpense(title, amount);
                   Navigator.pop(context);
                 }
               },
@@ -146,36 +138,35 @@ class IncomePage extends StatelessWidget {
     );
   }
 
-  void _showEditIncomeDialog(BuildContext context, int index) {
+  void _showEditExpenseDialog(BuildContext context, int index) {
     final TextEditingController titleController = TextEditingController(
-        text: context.read<IncomeModel>().incomes[index]['title']);
+        text: context.read<ExpenseModel>().expenses[index]['title']);
     final TextEditingController amountController = TextEditingController(
-        text: context.read<IncomeModel>().incomes[index]['amount'].toString());
+        text:
+            context.read<ExpenseModel>().expenses[index]['amount'].toString());
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Edit Income'),
+          title: Text('Edit Expense'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(labelText: 'Income Title'),
+                decoration: InputDecoration(labelText: 'Expense Title'),
               ),
               TextField(
                 controller: amountController,
                 keyboardType: TextInputType.number,
-                decoration: InputDecoration(labelText: 'Income Amount'),
+                decoration: InputDecoration(labelText: 'Expense Amount'),
               ),
             ],
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
+              onPressed: () => Navigator.pop(context),
               child: Text('Cancel'),
             ),
             TextButton(
@@ -185,8 +176,8 @@ class IncomePage extends StatelessWidget {
                     double.tryParse(amountController.text) ?? 0.0;
 
                 if (title.isNotEmpty && amount > 0) {
-                  Provider.of<IncomeModel>(context, listen: false)
-                      .updateIncome(index, title, amount);
+                  Provider.of<ExpenseModel>(context, listen: false)
+                      .updateExpense(index, title, amount);
                   Navigator.pop(context);
                 }
               },

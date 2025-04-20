@@ -47,8 +47,10 @@ class _SavingsPageState extends State<SavingsPage> {
             TextButton(
               onPressed: () {
                 final String name = nameController.text;
-                final double saved = double.tryParse(savedController.text) ?? 0.0;
-                final double target = double.tryParse(targetController.text) ?? 0.0;
+                final double saved =
+                    double.tryParse(savedController.text) ?? 0.0;
+                final double target =
+                    double.tryParse(targetController.text) ?? 0.0;
 
                 if (name.isNotEmpty && saved >= 0 && target > 0) {
                   setState(() {
@@ -157,8 +159,7 @@ class _SavingsPageState extends State<SavingsPage> {
                         minHeight: 8,
                       ),
                       SizedBox(height: 6),
-                      Text(
-                          'Saved: \$${item['saved']} / \$${item['target']}'),
+                      Text('Saved: \$${item['saved']} / \$${item['target']}'),
                       SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
@@ -181,14 +182,21 @@ class _SavingsPageState extends State<SavingsPage> {
           child: ElevatedButton(
             onPressed: _showAddSavingDialog,
             style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 14),
+              padding: EdgeInsets.all(16),
+              backgroundColor: Theme.of(context).primaryColor,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
+              elevation: 3, // Optional: soft shadow
             ),
             child: Text(
               'Add New Saving',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+                letterSpacing: 0.5,
+              ),
             ),
           ),
         ),

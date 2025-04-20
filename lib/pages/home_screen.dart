@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'savings.dart';
 import 'wallet.dart';
 import 'settings.dart';
+import 'expense.dart';
+import '../models/income_model.dart';
+import '../models/expense_model.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -10,13 +14,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  
 
   final List<Widget> _pages = [
     _HomePage(),
     SavingsPage(),
     IncomePage(),
-    SettingsPage(),
+    ExpensePage(),
   ];
 
   @override
@@ -41,9 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.savings), label: 'Savings'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet), label: 'Wallet'),
-          // BottomNavigationBarItem(
-          //     icon: Icon(Icons.settings), label: 'Settings'),
+              icon: Icon(Icons.attach_money), label: 'Wallet'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long), label: 'Expenses'),
         ],
       ),
     );
@@ -53,30 +56,31 @@ class _HomeScreenState extends State<HomeScreen> {
 class _HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Accessing the IncomeModel and ExpenseModel using Provider
+    final incomeModel = Provider.of<IncomeModel>(context);
+    final expenseModel = Provider.of<ExpenseModel>(context);
+
+    // Calculate total balance (Income - Expense)
+    final totalBalance = incomeModel.totalIncome - expenseModel.totalExpense;
+    
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildTotalBalance(),
+            _buildTotalBalance(totalBalance),
             SizedBox(height: 24),
-            _buildIncomeExpense(),
+            _buildIncomeExpense(incomeModel, expenseModel),
             SizedBox(height: 24),
             _buildExpenseChart(),
-            SizedBox(height: 24),
-            _buildGoalsHeader(),
-            SizedBox(height: 10),
-            _buildGoalCard('PlayStation 5', 500, 199),
-            _buildGoalCard('School Trip', 350, 150),
-            _buildGoalCard('New Laptop', 800, 700),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTotalBalance() {
+  Widget _buildTotalBalance(double totalBalance) {
     return Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -114,7 +118,7 @@ class _HomePage extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            '\$2,876.50',
+            '\$${totalBalance.toStringAsFixed(2)}',
             style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -137,13 +141,13 @@ class _HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildIncomeExpense() {
+  Widget _buildIncomeExpense(IncomeModel incomeModel, ExpenseModel expenseModel) {
     return Row(
       children: [
         Expanded(
           child: _buildMoneyCard(
             'Income',
-            '\$3,876.50',
+            '\$${incomeModel.totalIncome.toStringAsFixed(2)}',
             Icons.arrow_upward,
             Colors.green,
           ),
@@ -152,7 +156,7 @@ class _HomePage extends StatelessWidget {
         Expanded(
           child: _buildMoneyCard(
             'Expense',
-            '\$1,000.00',
+            '\$${expenseModel.totalExpense.toStringAsFixed(2)}',
             Icons.arrow_downward,
             Colors.red,
           ),
@@ -280,111 +284,7 @@ class _HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildGoalsHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          'Savings Goals',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-        TextButton(
-          onPressed: () {},
-          child: Text(
-            'See All',
-            style: TextStyle(
-              color: Color(0xFF0666EB),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+ 
 
-  Widget _buildGoalCard(String name, double saved, double remaining) {
-    double total = saved + remaining;
-    double percentage = (saved / total) * 100;
-
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                name,
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Color(0xFF0666EB).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  '${percentage.toStringAsFixed(0)}%',
-                  style: TextStyle(
-                    color: Color(0xFF0666EB),
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16),
-          Stack(
-            children: [
-              Container(
-                height: 8,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              FractionallySizedBox(
-                widthFactor: saved / total,
-                child: Container(
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF0666EB),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Saved: \$${saved.toStringAsFixed(0)}',
-                style: TextStyle(color: Colors.grey[700], fontSize: 14),
-              ),
-              Text(
-                'Goal: \$${total.toStringAsFixed(0)}',
-                style: TextStyle(color: Colors.grey[700], fontSize: 14),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+ 
 }
