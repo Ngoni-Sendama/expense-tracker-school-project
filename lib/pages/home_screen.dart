@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 import 'savings.dart';
 import 'wallet.dart';
 import 'settings.dart';
+import 'expense.dart';
 import '../models/income_model.dart';
+import '../models/expense_model.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -17,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _HomePage(),
     SavingsPage(),
     IncomePage(),
-    SettingsPage(),
+    ExpensePage(),
   ];
 
   @override
@@ -42,9 +44,9 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.savings), label: 'Savings'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.account_balance_wallet), label: 'Wallet'),
-          // BottomNavigationBarItem(
-          //     icon: Icon(Icons.settings), label: 'Settings'),
+              icon: Icon(Icons.attach_money), label: 'Wallet'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long), label: 'Expenses'),
         ],
       ),
     );
@@ -54,18 +56,22 @@ class _HomeScreenState extends State<HomeScreen> {
 class _HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // Accessing the IncomeModel using Provider
+    // Accessing the IncomeModel and ExpenseModel using Provider
     final incomeModel = Provider.of<IncomeModel>(context);
+    final expenseModel = Provider.of<ExpenseModel>(context);
 
+    // Calculate total balance (Income - Expense)
+    final totalBalance = incomeModel.totalIncome - expenseModel.totalExpense;
+    
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildTotalBalance(),
+            _buildTotalBalance(totalBalance),
             SizedBox(height: 24),
-            _buildIncomeExpense(incomeModel),
+            _buildIncomeExpense(incomeModel, expenseModel),
             SizedBox(height: 24),
             _buildExpenseChart(),
             SizedBox(height: 24),
@@ -80,7 +86,7 @@ class _HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildTotalBalance() {
+  Widget _buildTotalBalance(double totalBalance) {
     return Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -118,7 +124,7 @@ class _HomePage extends StatelessWidget {
           ),
           SizedBox(height: 10),
           Text(
-            '\$2,876.50',
+            '\$${totalBalance.toStringAsFixed(2)}',
             style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.bold,
@@ -141,7 +147,7 @@ class _HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildIncomeExpense(IncomeModel incomeModel) {
+  Widget _buildIncomeExpense(IncomeModel incomeModel, ExpenseModel expenseModel) {
     return Row(
       children: [
         Expanded(
@@ -156,7 +162,7 @@ class _HomePage extends StatelessWidget {
         Expanded(
           child: _buildMoneyCard(
             'Expense',
-            '\$1,000.00',
+            '\$${expenseModel.totalExpense.toStringAsFixed(2)}',
             Icons.arrow_downward,
             Colors.red,
           ),

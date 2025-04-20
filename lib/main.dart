@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
-import 'pages/onboarding_screen.dart';
 import 'package:provider/provider.dart';
+
+import 'pages/onboarding_screen.dart';
 import 'pages/home_screen.dart';
-import 'models/income_model.dart';
 import 'pages/wallet.dart';
+
+import 'models/income_model.dart';
+import 'models/expense_model.dart';  // ✅ Import the ExpenseModel
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => IncomeModel(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => IncomeModel()),
+        ChangeNotifierProvider(create: (_) => ExpenseModel()),  // ✅ Added ExpenseModel
+      ],
       child: MyApp(),
     ),
   );
