@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'pages/onboarding_screen.dart';
+import 'package:provider/provider.dart';
 import 'pages/home_screen.dart';
+import 'models/income_model.dart';
+import 'pages/wallet.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => IncomeModel(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

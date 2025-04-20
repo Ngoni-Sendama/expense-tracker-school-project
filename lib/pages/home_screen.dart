@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'savings.dart';
 import 'wallet.dart';
 import 'settings.dart';
+import '../models/income_model.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -10,7 +12,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
-  
 
   final List<Widget> _pages = [
     _HomePage(),
@@ -53,6 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
 class _HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // Accessing the IncomeModel using Provider
+    final incomeModel = Provider.of<IncomeModel>(context);
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(16),
@@ -61,7 +65,7 @@ class _HomePage extends StatelessWidget {
           children: [
             _buildTotalBalance(),
             SizedBox(height: 24),
-            _buildIncomeExpense(),
+            _buildIncomeExpense(incomeModel),
             SizedBox(height: 24),
             _buildExpenseChart(),
             SizedBox(height: 24),
@@ -137,13 +141,13 @@ class _HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildIncomeExpense() {
+  Widget _buildIncomeExpense(IncomeModel incomeModel) {
     return Row(
       children: [
         Expanded(
           child: _buildMoneyCard(
             'Income',
-            '\$3,876.50',
+            '\$${incomeModel.totalIncome.toStringAsFixed(2)}',
             Icons.arrow_upward,
             Colors.green,
           ),
