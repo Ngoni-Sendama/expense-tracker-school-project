@@ -74,12 +74,6 @@ class _HomePage extends StatelessWidget {
             _buildIncomeExpense(incomeModel, expenseModel),
             SizedBox(height: 24),
             _buildExpenseChart(),
-            SizedBox(height: 24),
-            _buildGoalsHeader(),
-            SizedBox(height: 10),
-            _buildGoalCard('PlayStation 5', 500, 199),
-            _buildGoalCard('School Trip', 350, 150),
-            _buildGoalCard('New Laptop', 800, 700),
           ],
         ),
       ),
@@ -290,111 +284,7 @@ class _HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildGoalsHeader() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          'Savings Goals',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-        ),
-        TextButton(
-          onPressed: () {},
-          child: Text(
-            'See All',
-            style: TextStyle(
-              color: Color(0xFF0666EB),
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+ 
 
-  Widget _buildGoalCard(String name, double saved, double remaining) {
-    double total = saved + remaining;
-    double percentage = (saved / total) * 100;
-
-    return Container(
-      margin: EdgeInsets.only(bottom: 16),
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                name,
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                decoration: BoxDecoration(
-                  color: Color(0xFF0666EB).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Text(
-                  '${percentage.toStringAsFixed(0)}%',
-                  style: TextStyle(
-                    color: Color(0xFF0666EB),
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 16),
-          Stack(
-            children: [
-              Container(
-                height: 8,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              FractionallySizedBox(
-                widthFactor: saved / total,
-                child: Container(
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: Color(0xFF0666EB),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Saved: \$${saved.toStringAsFixed(0)}',
-                style: TextStyle(color: Colors.grey[700], fontSize: 14),
-              ),
-              Text(
-                'Goal: \$${total.toStringAsFixed(0)}',
-                style: TextStyle(color: Colors.grey[700], fontSize: 14),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
+ 
 }

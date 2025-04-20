@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Expense Tracker',
       theme: ThemeData(
-        fontFamily: 'Inter',
+        fontFamily: 'roboto',
         primaryColor: Color(0xFF0666EB),
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: AppBarTheme(
